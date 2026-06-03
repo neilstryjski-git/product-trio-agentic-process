@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "product-trio",
+  "displayName": "Product Trio Agentic",
+  "version": "1.0.0",
+  "description": "The Hands: implementation agent for the Product Trio Agentic framework. Reads the Bedrock (four Pillars), runs Sprint 0, enforces Bedrock immutability via MACD, and executes through Stride as its governed execution layer.",
+  "author": {
+    "name": "Neil Stryjski",
+    "url": "https://productdelivered.ca"
+  },
+  "homepage": "https://www.productdelivered.ca/product-trio.html",
+  "repository": "https://github.com/neilstryjski-git/product-trio",
+  "license": "MIT",
+  "keywords": [
+    "product-trio",
+    "agentic",
+    "governance",
+    "bedrock",
+    "macd",
+    "stride",
+    "product-management"
+  ],
+  "dependencies": [
+    { "name": "stride", "marketplace": "stride-marketplace" }
+  ]
+}

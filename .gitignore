@@ -7,6 +7,13 @@ Thumbs.db
 .claude/
 .gemini/
 
+# Internal working notes (Brain seeds, spike findings) — not part of the published framework
+.docs/
+
+# Stride: auth token is a SECRET — never commit. Also ignore the local orchestrator marker dir.
+.stride_auth*.md
+.stride/
+
 # Project Pillar files (your Bedrock lives in your project repo, not here)
 productdocuments/*.md
 !productdocuments/README.md

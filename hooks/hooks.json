@@ -1,0 +1,17 @@
+{
+  "description": "Product Trio: enforce Bedrock immutability (MACD). Denies Write/Edit on committed Pillars in productdocuments/ unless a short-lived single-use unlock marker is present (written by /amendment after Senior PM approval).",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/bedrock-guard.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

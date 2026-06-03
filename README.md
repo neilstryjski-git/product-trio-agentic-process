@@ -51,6 +51,8 @@ The **Senior PM (you)** holds ultimate authority. Every major proposal gets a pr
 
 The Bedrock is the source of truth. It is never edited by a coding agent. Every build decision traces back here.
 
+A Bedrock is **one or more four-Pillar sets.** A set describes a discrete, hand-offable body of work — a product area, a releasable version, or an engagement. The four-Pillar shape is the **atomic unit**: the **primary (or only) set** sits flat at the root of `productdocuments/`, and each **additional** set lives in a meaningfully-named subfolder. Subfolders appear **only when a project actually grows past one set** — multi-set is a growth path, not a precondition, so a project that may never have a second set simply keeps its four Pillars flat. The Hands read only the **in-scope set** (a named subfolder, or the root/primary set by default).
+
 **Pillar I — The Charter (The North Star)**
 Mission, Constraints, User Personas, Domain Glossary, Problem Statement. Includes a C1 System Context diagram (Mermaid) showing how the system interacts with users and external systems. Mandatory for any new feature.
 
@@ -93,7 +95,7 @@ Three implementation personas execute the HLD. They read the Pillars, run Sprint
 
 Sprint 0 is mandatory. It is a Three Amigos session — all three personas plus the Senior PM — that runs automatically after the Pillars are read.
 
-1. Read all four Pillars in full
+1. Read the in-scope set's four Pillars in full
 2. Execute Brain-identified LLD unknowns from Pillar IV
 3. Surface additional gaps the Brain couldn't anticipate
 4. Resolve each item collaboratively or escalate formally
@@ -117,6 +119,34 @@ This is the Strategic Tripwire. The Brain finds out before a gap becomes a surpr
 
 The threshold for an Amendment is deliberate: complexity alone isn't enough. The change must be fundamental — affecting the Charter or Problem Statement. The PM decides whether to invoke it. The AI suggests; it does not block.
 
+#### Slash Commands & Enforced Immutability
+
+On Claude Code, The Hands ship as a plugin with three rituals as first-class slash commands — so the framework's disciplines are invoked explicitly, not left to hope that prose triggers them:
+
+| Command | What it does |
+|---|---|
+| `/sprint-0` | Runs the mandatory Three Amigos foundational-context phase and holds at the Senior PM sign-off gate before any implementation. |
+| `/bedrock-audit` | Reports each Pillar's `[COMMITTED]` / `[UNDER AUDIT]` state and flags drift — uncommitted changes to a ratified Pillar. Read-only. |
+| `/amendment` | Drives the Pillar V Amendment ceremony: MACD discussion, Senior PM approval, the Handback Summary, and the single-use unlock marker that authorizes a sanctioned Pillar edit. |
+
+And the Bedrock's immutability stops being a convention you have to remember. A **PreToolUse hook** denies any `Write`/`Edit` to a committed Pillar in `productdocuments/` unless `/amendment` has written a short-lived, single-use unlock marker for that exact file. A casual edit is blocked; a ratified amendment passes. (In Gemini CLI mode the hook is unavailable, so the discipline is maintained manually.)
+
+---
+
+## Stride — The Governed Execution Layer
+
+Stride is task execution and quality management software developed by Jeff Morgan — a recognized practitioner in agentic software delivery and AI-assisted development workflows. Jeff built and uses Stride within his own consultancy practice as a governed framework for autonomous agent execution. With Jeff's approval, Stride has been integrated into the Product Trio Agentic framework as the execution layer that The Hands operate within, and the relationship between the two systems represents a budding partnership between complementary approaches to the same problem space.
+
+That partnership carries weight beyond the technical integration. Jeff's standing in the agentic delivery community provides independent validation that the Product Trio Agentic framework is operating in a space that serious practitioners are converging on — and that the integration decision reflects genuine philosophical alignment, not convenience. Two independently developed systems, built by practitioners working from first principles, arriving at compatible answers is a stronger signal than any single system claiming the same ground alone.
+
+**Where the Four Pillars answer *what should be built and why*, Stride answers *how the building is governed task-by-task*.**
+
+The two systems are complementary in philosophy as well as function. Both treat human-in-the-loop ratification as a primary mechanism, not an optional governance add-on — no strategic decision becomes binding without explicit Senior PM confirmation, on either side. And both embrace agentic autonomy where it is practical: coding agents claim tasks, explore, implement, and review autonomously, while the human PM is freed from line-by-line review precisely because the governing contract — the Bedrock, the Stride task spec — is rigorous enough to make that autonomy safe.
+
+Stride alone gives disciplined task execution but no governed source of strategic truth — tasks can be perfectly executed toward an incoherent product. Product Trio Agentic alone gives a governed source of truth but no enforced execution discipline — decisions can be beautifully documented and then sloppily built. Together they close the loop: a decision is ratified into the Bedrock, decomposed into governed Stride tasks, built and reviewed by agents against that Bedrock, and any blocker that turns out to be strategic triggers a formal Pillar V Amendment — submitted by The Hands, ratified by The Brain, enshrined in the Ledger before any deviation is executed. An unbroken, auditable chain from intent to merged code.
+
+When Stride is present (the default — see Installation), code review is handled by `stride:task-reviewer`; The Hands' QA Engineer does **not** run a parallel diff review, but adds Pillar III BDD validation on top of it. When Stride is absent, the framework degrades gracefully — review reverts to a QA Engineer self-review pass and tasks are tracked in `log_of_changes.md`. The full operating contract for both modes lives in the plugin's `skills/the-hands-agent/references/stride-integration.md`.
+
 ---
 
 ## The C4 Design Standard
@@ -135,13 +165,40 @@ All architecture diagrams are produced in **Mermaid.js** and stored directly in 
 
 ## What's in This Repo
 
+The repo root *is* the Claude Code plugin **and** its own marketplace.
+
 ```
 product-trio/
 ├── README.md                        ← You are here
+├── LICENSE
+├── .claude-plugin/
+│   ├── plugin.json                  ← Plugin manifest (declares the Stride dependency)
+│   └── marketplace.json             ← Marketplace catalog (hosts this plugin)
 ├── product-trio-brain/
 │   └── system-prompt.md             ← Paste into Claude.ai or Gemini chat to activate The Brain
-└── the-hands-agent/
-    └── SKILL.md                     ← Cross-platform skill (Claude Code + Gemini CLI)
+├── skills/
+│   └── the-hands-agent/
+│       ├── SKILL.md                 ← Thin skill: role, when-to-use, pointers
+│       └── references/              ← Progressive disclosure, loaded on demand
+│           ├── sprint-0.md
+│           ├── macd-protocol.md
+│           ├── amendment-protocol.md
+│           ├── personas.md
+│           ├── qa-protocol.md
+│           └── stride-integration.md
+├── agents/                          ← Hands subagents
+│   ├── hands-tpm.md
+│   ├── hands-tech-lead.md
+│   └── hands-qa.md
+├── commands/                        ← Slash commands
+│   ├── sprint-0.md
+│   ├── amendment.md
+│   └── bedrock-audit.md
+├── hooks/
+│   ├── hooks.json                   ← PreToolUse Write|Edit → bedrock-guard.sh
+│   └── bedrock-guard.sh             ← Enforces Bedrock immutability (MACD)
+└── productdocuments/
+    └── README.md                    ← Your Bedrock: four Pillars (flat for a single set, or one named subfolder per set)
 ```
 
 ---
@@ -156,14 +213,31 @@ product-trio/
 
 ### The Hands — Claude Code
 
-Install manually:
-```bash
-cp -r the-hands-agent ~/.claude/skills/
+The Hands ship as a Claude Code plugin. Add the marketplace, then install:
+
 ```
+/plugin marketplace add neilstryjski-git/product-trio
+/plugin install product-trio@product-trio
+```
+
+(These are slash commands you type inside Claude Code. The equivalent shell form is `claude plugin marketplace add …` / `claude plugin install …`.)
+
+Installing Product Trio **auto-installs Stride**, its governed execution layer — Product Trio declares a hard cross-marketplace dependency on the `stride` plugin (see [Stride — The Governed Execution Layer](#stride--the-governed-execution-layer)). To pull updates later: `/plugin marketplace update`.
+
+**Minimum Claude Code version for the one-step experience:** cross-marketplace dependency resolution needs **v2.1.110+**, and transitive auto-enable of Stride needs **v2.1.143+**. On an older version you'll get a `dependency-unsatisfied` notice — add Stride's marketplace and install it explicitly:
+
+```
+/plugin marketplace add cheezy/stride-marketplace
+/plugin install stride@stride-marketplace
+```
+
+Then re-run the Product Trio install. The framework still functions if Stride is absent — it degrades to a QA Engineer self-review pass (see the Stride section).
+
+> **Bedrock enforcement & `.gitignore`.** The `/amendment` command writes a short-lived unlock marker under your project's `.product-trio/` directory, which the Bedrock hook consumes. That marker is local-only state and must never be committed. Either let `/amendment` create `.product-trio/.gitignore` (containing `*`), or — equivalently — add a single line `.product-trio/` to your project-root `.gitignore`.
 
 ### The Hands — Gemini CLI
 
-Copy `the-hands-agent/SKILL.md` content into your `GEMINI.md` at project root. Follow all instructions as written.
+Gemini has no plugin system, so copy the contents of `skills/the-hands-agent/SKILL.md` into your `GEMINI.md` at project root and follow the instructions as written. The Bedrock-enforcement hook and slash commands are Claude Code features; in Gemini mode the MACD discipline is maintained manually.
 
 ---
 
