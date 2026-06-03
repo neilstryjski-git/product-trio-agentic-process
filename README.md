@@ -216,7 +216,7 @@ product-trio/
 The Hands ship as a Claude Code plugin. Add the marketplace, then install:
 
 ```
-/plugin marketplace add neilstryjski-git/product-trio
+/plugin marketplace add neilstryjski-git/product-trio-agentic-process
 /plugin install product-trio@product-trio
 ```
 
