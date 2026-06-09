@@ -67,14 +67,14 @@ Recommended Brain Action: Strategic Re-engagement — Trio review of Pillar V
 Files for Brain review: log_of_changes.md, pillar_v_amendment_[feature]_[date].md
 ```
 
-Pillars II–III remain static. Pillar V is the active override until The Brain enshrines the change.
+Pillars I–III remain static — substantive Pillars are **never edited by the Hands**, even under an approved amendment. Their change is ratified by The Brain in Strategic Re-engagement and committed out-of-band. The amendment's only on-disk footprint at the Hands' stage is (a) the uncommitted `pillar_v_amendment_*.md` override file, and (b) a single PROPOSED row appended to the **Pillar IV Ledger** — the one committed-Pillar edit the ceremony may make. Pillar V is the active override until The Brain enshrines the change. The Bedrock-enforcement hook makes this a hard guarantee: a marker can only authorize the Ledger; a substantive-Pillar edit is denied even with a valid marker.
 
 ## The `/amendment` command (and the Bedrock unlock)
 
 The plugin contributes the `/amendment` slash command (built in W6). Running `/amendment`:
 
 1. Runs the MACD ceremony (Trigger / Reason / Impact captured per the format above).
-2. After Senior PM approval, writes a short-lived single-use unlock marker that the Bedrock-enforcement hook (see [`macd-protocol.md`](macd-protocol.md)) checks and consumes — so the sanctioned edit to a committed Pillar is permitted.
+2. After Senior PM approval, writes a short-lived single-use unlock marker — **targeting the Pillar IV Ledger only** — that the Bedrock-enforcement hook (see [`macd-protocol.md`](macd-protocol.md)) checks and consumes, permitting the one sanctioned edit: a PROPOSED amendment row in the Ledger. The hook denies any Hands edit to a substantive Pillar (I/II/III) even with a marker.
 3. Generates the Handback Summary for Strategic Re-engagement with The Brain.
 
 The legacy `/amend` command from earlier framework versions is renamed `/amendment`. `/logstate` (status report of Sprint 0 progress / open gaps / active amendments) is deferred — track via the `log_of_changes.md` conventions in [`personas.md`](personas.md) until built.

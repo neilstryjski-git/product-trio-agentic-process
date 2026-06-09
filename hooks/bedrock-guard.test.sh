@@ -36,9 +36,10 @@ new_project(){
   git -C "$p" config user.email t@example.com
   git -C "$p" config user.name  "Bedrock Test"
   mkdir -p "$p/productdocuments" "$p/src"
-  printf '# Charter\n' > "$p/productdocuments/pillar.md"
-  printf 'x\n'         > "$p/src/foo.txt"
-  git -C "$p" add productdocuments/pillar.md src/foo.txt
+  printf '# Pillar IV: The Ledger\n' > "$p/productdocuments/pillar_4_ledger.md"
+  printf '# Pillar II: The Specs\n'  > "$p/productdocuments/pillar_2_specs.md"
+  printf 'x\n'                       > "$p/src/foo.txt"
+  git -C "$p" add productdocuments/pillar_4_ledger.md productdocuments/pillar_2_specs.md src/foo.txt
   git -C "$p" commit -q -m init
   printf '%s' "$p"
 }
@@ -94,8 +95,8 @@ check_allow "2  untracked file in productdocuments/ is allowed" "$out"
 
 # 3. Committed Pillar with a valid, matching, unexpired marker -> allow + consume.
 P="$(new_project)"
-write_marker "$P" "productdocuments/pillar.md" "$((NOW + 600))"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+write_marker "$P" "productdocuments/pillar_4_ledger.md" "$((NOW + 600))"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_allow "3  committed Pillar with valid marker is allowed" "$out"
 if [ ! -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "3a marker is consumed (single-use) after a sanctioned edit"
@@ -107,13 +108,13 @@ fi
 
 # 4. Committed Pillar, no marker -> deny with the run-/amendment reason.
 P="$(new_project)"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "4  committed Pillar without a marker is denied" "$out" "Bedrock is immutable"
 
 # 5. Committed Pillar, expired marker -> deny + marker discarded.
 P="$(new_project)"
-write_marker "$P" "productdocuments/pillar.md" "$((NOW - 10))"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+write_marker "$P" "productdocuments/pillar_4_ledger.md" "$((NOW - 10))"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "5  committed Pillar with an expired marker is denied" "$out" "expired"
 if [ ! -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "5a expired marker is discarded"
@@ -125,7 +126,7 @@ fi
 #    (it is still valid for its real target).
 P="$(new_project)"
 write_marker "$P" "productdocuments/other.md" "$((NOW + 600))"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "6  marker for a different Pillar does not authorize this one" "$out" "different Pillar"
 if [ -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "6a wrong-target marker is retained (still valid for its real target)"
@@ -148,7 +149,7 @@ check_deny "8  symlink escaping productdocuments/ is denied" "$out" "boundary mi
 
 # 9. Alias-in: lexically outside, really inside productdocuments/ -> deny.
 P="$(new_project)"
-ln -s "$P/productdocuments/pillar.md" "$P/alias.md"
+ln -s "$P/productdocuments/pillar_4_ledger.md" "$P/alias.md"
 out="$(run_guard "$P" "$P" "$P/alias.md")"
 check_deny "9  symlink aliasing into productdocuments/ is denied" "$out" "boundary mismatch"
 
@@ -161,7 +162,7 @@ check_deny "9  symlink aliasing into productdocuments/ is denied" "$out" "bounda
 P="$(new_project)"
 LINK="$WORK/link.$$"
 ln -s "$P" "$LINK"
-out="$(run_guard "$LINK" "$LINK" "$P/productdocuments/pillar.md")"
+out="$(run_guard "$LINK" "$LINK" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "10 committed Pillar denied when CLAUDE_PROJECT_DIR is a symlink (I2 proxy)" "$out" "Bedrock is immutable"
 
 # --- Marker-validation deny branches (beyond the 10 W6 cases) ---------------
@@ -172,7 +173,7 @@ check_deny "10 committed Pillar denied when CLAUDE_PROJECT_DIR is a symlink (I2 
 P="$(new_project)"
 mkdir -p "$P/.product-trio"
 printf 'not-json{' > "$P/.product-trio/.bedrock-unlock"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "11 malformed marker is rejected" "$out" "malformed"
 if [ ! -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "11a malformed marker is discarded"
@@ -184,7 +185,7 @@ fi
 P="$(new_project)"
 mkdir -p "$P/.product-trio"
 printf '{"expires_at":%s}' "$((NOW + 600))" > "$P/.product-trio/.bedrock-unlock"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "12 marker with no target path is rejected" "$out" "no target path"
 if [ ! -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "12a targetless marker is discarded"
@@ -195,8 +196,8 @@ fi
 # 13. Marker with a non-integer expires_at -> deny + discard.
 P="$(new_project)"
 mkdir -p "$P/.product-trio"
-printf '{"path":"productdocuments/pillar.md","expires_at":"soon"}' > "$P/.product-trio/.bedrock-unlock"
-out="$(run_guard "$P" "$P" "$P/productdocuments/pillar.md")"
+printf '{"path":"productdocuments/pillar_4_ledger.md","expires_at":"soon"}' > "$P/.product-trio/.bedrock-unlock"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_4_ledger.md")"
 check_deny "13 marker with invalid expires_at is rejected" "$out" "invalid expires_at"
 if [ ! -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "13a invalid-expiry marker is discarded"
@@ -209,24 +210,46 @@ fi
 # on the guard being subdir-aware. Pin that: a committed Pillar inside a set
 # subfolder is governed identically to a flat one.
 
-# 14. Committed Pillar in productdocuments/<set>/ -> deny without a marker.
+# 14. Committed Ledger in productdocuments/<set>/ -> deny without a marker.
 P="$(new_project)"
 mkdir -p "$P/productdocuments/voc_mt_ia"
-printf '# Charter\n' > "$P/productdocuments/voc_mt_ia/charter.md"
-git -C "$P" add productdocuments/voc_mt_ia/charter.md >/dev/null 2>&1
+printf '# Pillar IV: The Ledger\n' > "$P/productdocuments/voc_mt_ia/pillar_4_ledger.md"
+git -C "$P" add productdocuments/voc_mt_ia/pillar_4_ledger.md >/dev/null 2>&1
 git -C "$P" commit -q -m set
-out="$(run_guard "$P" "$P" "$P/productdocuments/voc_mt_ia/charter.md")"
-check_deny "14 committed Pillar in a productdocuments/<set>/ subfolder is denied (multi-set)" "$out" "Bedrock is immutable"
+out="$(run_guard "$P" "$P" "$P/productdocuments/voc_mt_ia/pillar_4_ledger.md")"
+check_deny "14 committed Ledger in a productdocuments/<set>/ subfolder is denied (multi-set)" "$out" "Bedrock is immutable"
 
-# 14a. A valid marker targeting that subfolder Pillar authorizes the edit + consumes.
-write_marker "$P" "productdocuments/voc_mt_ia/charter.md" "$((NOW + 600))"
-out="$(run_guard "$P" "$P" "$P/productdocuments/voc_mt_ia/charter.md")"
-check_allow "14a sanctioned edit of a subfolder-set Pillar is allowed" "$out"
+# 14a. A valid marker targeting that subfolder Ledger authorizes the edit + consumes.
+write_marker "$P" "productdocuments/voc_mt_ia/pillar_4_ledger.md" "$((NOW + 600))"
+out="$(run_guard "$P" "$P" "$P/productdocuments/voc_mt_ia/pillar_4_ledger.md")"
+check_allow "14a sanctioned edit of a subfolder-set Ledger is allowed" "$out"
 if [ ! -f "$P/.product-trio/.bedrock-unlock" ]; then
   ok "14b subfolder-set marker is consumed"
 else
   ko "14b subfolder-set marker should have been consumed but still exists"
 fi
+
+# --- Ledger-only rule: substantive Pillars (I/II/III) are immutable ----------
+# The Hands may edit ONLY the Pillar IV Ledger via the ceremony. A substantive
+# Pillar is denied even WITH a structurally valid, matching, unexpired marker —
+# and the deny is marker-independent (the marker is never read or consumed).
+
+# 15. Committed substantive Pillar (II Specs) WITH a valid marker -> still DENY.
+P="$(new_project)"
+write_marker "$P" "productdocuments/pillar_2_specs.md" "$((NOW + 600))"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_2_specs.md")"
+check_deny "15 substantive Pillar denied even with a valid marker" "$out" "Substantive Pillars"
+if [ -f "$P/.product-trio/.bedrock-unlock" ]; then
+  ok "15a marker is retained on a substantive-Pillar deny (rule is marker-independent)"
+else
+  ko "15a marker should have been retained (substantive deny must not read/consume it)"
+fi
+
+# 16. Committed substantive Pillar, NO marker -> DENY with the substantive reason
+#     (the Brain-ratified message), not the generic run-/amendment message.
+P="$(new_project)"
+out="$(run_guard "$P" "$P" "$P/productdocuments/pillar_2_specs.md")"
+check_deny "16 substantive Pillar without a marker is denied (Brain-ratified path)" "$out" "Substantive Pillars"
 
 echo
 echo "----------------------------------------"

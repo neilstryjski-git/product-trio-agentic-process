@@ -127,9 +127,9 @@ On Claude Code, The Hands ship as a plugin with three rituals as first-class sla
 |---|---|
 | `/sprint-0` | Runs the mandatory Three Amigos foundational-context phase and holds at the Senior PM sign-off gate before any implementation. |
 | `/bedrock-audit` | Reports each Pillar's `[COMMITTED]` / `[UNDER AUDIT]` state and flags drift — uncommitted changes to a ratified Pillar. Read-only. |
-| `/amendment` | Drives the Pillar V Amendment ceremony: MACD discussion, Senior PM approval, the Handback Summary, and the single-use unlock marker that authorizes a sanctioned Pillar edit. |
+| `/amendment` | Drives the Pillar V Amendment ceremony: MACD discussion, Senior PM approval, the Handback Summary, and the single-use unlock marker that authorizes the one sanctioned committed-Pillar edit — a PROPOSED amendment row in the Pillar IV Ledger. Substantive Pillars (I/II/III) are never edited by the Hands; The Brain enshrines those. |
 
-And the Bedrock's immutability stops being a convention you have to remember. A **PreToolUse hook** denies any `Write`/`Edit` to a committed Pillar in `productdocuments/` unless `/amendment` has written a short-lived, single-use unlock marker for that exact file. A casual edit is blocked; a ratified amendment passes. (In Gemini CLI mode the hook is unavailable, so the discipline is maintained manually.)
+And the Bedrock's immutability stops being a convention you have to remember. A **PreToolUse hook** denies any `Write`/`Edit` to a committed Pillar in `productdocuments/` unless `/amendment` has written a short-lived, single-use unlock marker for that exact file — and that marker can only ever authorize the **Pillar IV Ledger** (a PROPOSED amendment row). Substantive Pillars (I Charter, II Specs, III Quality Gate) are denied *even with a marker*: the Hands never edit them, and The Brain enshrines their changes out-of-band. A casual edit is blocked; a ratified Ledger amendment passes. (In Gemini CLI mode the hook is unavailable, so the discipline is maintained manually.)
 
 ---
 

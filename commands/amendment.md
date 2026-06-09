@@ -1,10 +1,10 @@
 ---
-description: Initiate the Pillar V Amendment Protocol — drive the MACD ceremony with the Hands personas, secure Senior PM approval, write a single-use unlock marker the Bedrock-enforcement hook consumes, author the pillar_v_amendment_*.md file, perform any sanctioned Pillar edit, and generate the Handback Summary for Strategic Re-engagement with The Brain.
+description: Initiate the Pillar V Amendment Protocol — drive the MACD ceremony with the Hands personas, secure Senior PM approval, write a single-use unlock marker the Bedrock-enforcement hook consumes, author the pillar_v_amendment_*.md file, record a PROPOSED amendment row in the Pillar IV Ledger (the only committed-Pillar edit the Hands may make), and generate the Handback Summary for Strategic Re-engagement with The Brain.
 ---
 
 # /amendment — Pillar V Amendment Protocol
 
-You are running the Product Trio `/amendment` command. The Bedrock is immutable by default; this command is the **only** sanctioned path to a committed-Pillar edit. The Bedrock-enforcement PreToolUse hook (`hooks/bedrock-guard.sh`) will block any uncoordinated Write/Edit on a committed Pillar in `productdocuments/` until you complete this ceremony and write the unlock marker.
+You are running the Product Trio `/amendment` command. The Bedrock is immutable by default. This command unlocks exactly **one** thing: a single PROPOSED amendment row in the **Pillar IV Ledger** — the record that an amendment is in flight. **Substantive Pillars (I Charter, II Specs, III Quality Gate) it never unlocks** — those changes are The Brain's, ratified in Strategic Re-engagement and committed out-of-band. The Bedrock-enforcement PreToolUse hook (`hooks/bedrock-guard.sh`) blocks any uncoordinated Write/Edit on a committed Pillar, and denies a substantive-Pillar edit *even with a valid marker*.
 
 The Hands' canonical Amendment Protocol lives in [`skills/the-hands-agent/references/amendment-protocol.md`](../skills/the-hands-agent/references/amendment-protocol.md). Read it if you don't have it loaded. The MACD rules live in [`skills/the-hands-agent/references/macd-protocol.md`](../skills/the-hands-agent/references/macd-protocol.md). Persona Speaking-as labels live in [`skills/the-hands-agent/references/personas.md`](../skills/the-hands-agent/references/personas.md).
 
@@ -43,9 +43,11 @@ Filename: `productdocuments/pillar_v_amendment_[feature]_[YYYY-MM-DD].md` (slug 
 
 Use the structure documented in [`amendment-protocol.md`](../skills/the-hands-agent/references/amendment-protocol.md) under "The Pillar V file". Status is `PROPOSED` until the PM marks it `APPROVED`, and the PM Decision section reflects what just happened in Step 2.
 
-## Step 4 — If a committed Pillar must also be edited, write the unlock marker
+## Step 4 — Record the amendment in the Pillar IV Ledger
 
-This step is **only** necessary if the Amendment requires modifying an already-committed Pillar file (e.g., editing `productdocuments/pillar-2.md` directly). If the Amendment is purely the new `pillar_v_amendment_*.md` (an override that leaves Pillars I–IV unchanged on disk), skip to Step 5.
+The **only** committed Pillar the Hands may edit is the **Pillar IV Ledger**, and the only sanctioned edit is a single **PROPOSED amendment row** in its Change Log — a durable, committed breadcrumb that an amendment is in flight (it survives even though the `pillar_v_amendment_*.md` file itself stays uncommitted). **Substantive Pillars (I Charter, II Specs, III Quality Gate) are never edited here.** Their change is The Brain's: ratified in Strategic Re-engagement and committed out-of-band, never written in this session. The hook enforces this — it denies any Hands edit to a substantive Pillar *even with a valid marker*; a marker can only ever authorize the Ledger.
+
+(If the amendment needs no Ledger row yet — e.g. it is purely the new `pillar_v_amendment_*.md` override — skip to Step 5. That file stays **uncommitted** until The Brain session, so it needs no marker.)
 
 ### 4a. Ensure the marker directory is gitignored
 
@@ -57,13 +59,13 @@ The unlock marker is local-only state — it must never be committed. Before wri
 
 Conventional alternative: instead of the per-directory `.product-trio/.gitignore`, the project may carry a single line `.product-trio/` in its **project-root `.gitignore`**. Either approach keeps the marker out of git; if the root `.gitignore` already ignores `.product-trio/`, the per-directory file is unnecessary.
 
-### 4b. Write the unlock marker
+### 4b. Write the unlock marker (Ledger target only)
 
-Write `<project>/.product-trio/.bedrock-unlock` with the following JSON content. The marker is **single-use** (the guard deletes it on consume) and **short-lived** (expires 10 minutes from now). It authorizes editing a **specific** file — to edit a different Pillar, re-run `/amendment`.
+Write `<project>/.product-trio/.bedrock-unlock` with the following JSON. The marker is **single-use** (the guard deletes it on consume) and **short-lived** (expires 10 minutes from now). Its `path` **MUST be the in-scope set's Pillar IV Ledger** — the hook rejects a marker pointed at any substantive Pillar.
 
 ```json
 {
-  "path": "productdocuments/<the-pillar-file-being-edited>.md",
+  "path": "productdocuments/<set>/<...pillar_4_ledger...>.md",
   "expires_at": <unix-epoch-seconds-of-now-plus-600>,
   "amendment_file": "productdocuments/pillar_v_amendment_<feature>_<YYYY-MM-DD>.md",
   "approved_by": "Senior PM",
@@ -71,11 +73,17 @@ Write `<project>/.product-trio/.bedrock-unlock` with the following JSON content.
 }
 ```
 
-Compute `expires_at` as the current unix epoch seconds + 600. (e.g., `date -u +%s` then `+ 600`.) Use the project-relative path for `path`. Do not include absolute paths.
+Compute `expires_at` as the current unix epoch seconds + 600 (`date -u +%s` then `+ 600`). Use the project-relative path. The Ledger is identified by filename — Pillar IV files carry `pillar_4` and/or `ledger`; name yours accordingly or the hook will treat it as a substantive Pillar and refuse the marker.
 
-### 4c. Perform the sanctioned Pillar edit
+### 4c. Append the PROPOSED amendment row to the Ledger
 
-Now Write/Edit the Pillar file. The Bedrock-enforcement hook will read the marker, confirm the path matches and the expiry is in the future, **consume the marker (delete it)**, and allow the edit. The marker is single-use — the next casual edit attempt will be blocked.
+Edit the Pillar IV Ledger, appending one Change Log row that records the amendment as PROPOSED and pending — to be addressed by the Hands in a later session once The Brain ratifies it. For example:
+
+```
+| (pending) | YYYY-MM-DD | — | AMEND (PROPOSED) | Amendment "<feature>" raised: <one-line trigger>. Awaiting Brain ratification → Hands implementation. See pillar_v_amendment_<feature>_<YYYY-MM-DD>.md | TPM |
+```
+
+The hook validates the marker (Ledger target, unexpired, path-matched), **consumes it (single-use)**, and allows this one edit. Do **not** attempt to edit a substantive Pillar — the hook blocks it regardless of approval; that change belongs to The Brain.
 
 ## Step 5 — Generate the Amendment Handback Summary
 
@@ -99,7 +107,7 @@ Append an entry per the standard format in [`personas.md`](../skills/the-hands-a
 ```
 ## [YYYY-MM-DD HH:MM] — Pillar V Amendment: <feature>
 Action: Initiated and approved Amendment for <affected Pillar>
-Files Modified: productdocuments/pillar_v_amendment_<feature>_<YYYY-MM-DD>.md[, productdocuments/<pillar-file>.md if edited]
+Files Modified: productdocuments/pillar_v_amendment_<feature>_<YYYY-MM-DD>.md[, productdocuments/<set>/<...pillar_4_ledger...>.md (PROPOSED amendment row)]
 Libraries Installed: None
 Deviation from HLD: See pillar_v_amendment_<feature>_<YYYY-MM-DD>.md
 Notes: Strategic Re-engagement with The Brain required to enshrine Pillar V into Pillars II–III.
@@ -107,9 +115,10 @@ Notes: Strategic Re-engagement with The Brain required to enshrine Pillar V into
 
 ## Forbidden shortcuts
 
+- **Never** edit a substantive Pillar (I Charter / II Specs / III Quality Gate) — *even with PM approval*. The Hands' only committed-Pillar edit is the Pillar IV Ledger amendment row; substantive changes are ratified by The Brain and committed out-of-band. The hook denies it regardless of any marker.
 - **Never** write the unlock marker without completing the Three Amigos ceremony and securing explicit Senior PM `APPROVED`. The marker is the receipt of a ratified MACD decision, not a bypass.
 - **Never** extend the marker expiry beyond a few minutes "to be safe." Single-use + short-lived is the whole point.
-- **Never** edit a Pillar with the marker pointing at a different file — write a new marker for the new target, or re-run `/amendment`.
+- **Never** point the marker at anything but the Pillar IV Ledger — the hook will reject it.
 - **Never** commit `.product-trio/` contents. The guard's authority depends on the marker being local-only state.
 
 ## When Stride is present

@@ -5,6 +5,11 @@
 # <project>/productdocuments/ unless a short-lived single-use unlock marker
 # at <project>/.product-trio/.bedrock-unlock authorizes the exact file.
 #
+# Ledger-only rule: the marker may authorize ONLY the Pillar IV Ledger (a
+# PROPOSED amendment row). Substantive Pillars (I Charter, II Specs, III Quality
+# Gate) are immutable to the Hands and are denied even WITH a valid marker —
+# their changes are ratified by The Brain and committed out-of-band.
+#
 # The /amendment command writes the marker after the MACD ceremony and Senior
 # PM approval. The guard validates and consumes the marker (single-use), so a
 # sanctioned amendment passes and a casual edit is blocked.
@@ -24,6 +29,7 @@ INPUT="$(cat)"
 python3 - "$INPUT" <<'PYEOF'
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -143,6 +149,28 @@ def discard_marker():
         os.remove(marker_path)
     except Exception:
         pass
+
+# --- Ledger-only rule -------------------------------------------------------
+# The ONLY committed Pillar the Hands (the agent) may ever edit is the Pillar IV
+# Ledger, and only via the amendment ceremony below (to record a PROPOSED
+# amendment row). Substantive Pillars — I Charter, II Specs, III Quality Gate —
+# are immutable to the Hands entirely: their changes are ratified by The Brain
+# in Strategic Re-engagement and committed out-of-band, never written in-session.
+# This is marker-INDEPENDENT — no unlock marker can authorize a substantive-Pillar
+# edit (we deny before the marker is even read). Pillar IV == the Ledger by
+# framework invariant; detect by filename (Pillar IV files carry "pillar_4"
+# and/or "ledger").
+_base = os.path.basename(abs_path).lower()
+is_ledger = ("ledger" in _base) or bool(re.search(r"pillar[ _-]?4(?!\d)", _base))
+if not is_ledger:
+    deny(
+        "Substantive Pillars (Charter / Specs / Quality Gate) are immutable to "
+        "the Hands. Their changes are ratified by The Brain in Strategic "
+        "Re-engagement and committed out-of-band — never edited in-session, and "
+        "no unlock marker can authorize it. The only committed Pillar the "
+        "/amendment ceremony may write is the Pillar IV Ledger (a PROPOSED "
+        f"amendment row). (Blocked file: {rel})"
+    )
 
 if not os.path.isfile(marker_path):
     deny(

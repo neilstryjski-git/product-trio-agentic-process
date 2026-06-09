@@ -31,7 +31,7 @@ Load the relevant reference file on demand:
 This plugin contributes the following slash commands:
 
 - `/sprint-0` — run the Sprint 0 ritual (built in W7)
-- `/amendment` — initiate the Pillar V Amendment Protocol and unlock the Bedrock gate for a sanctioned edit (built in W6)
+- `/amendment` — initiate the Pillar V Amendment Protocol and unlock the Bedrock gate for the one sanctioned edit: a PROPOSED amendment row in the Pillar IV Ledger (substantive Pillars stay immutable to the Hands; built in W6)
 - `/bedrock-audit` — report Pillar state (`[COMMITTED]` / `[UNDER AUDIT]`) and drift (built in W7)
 
 The legacy `/amend` command from earlier framework versions is renamed `/amendment`. `/logstate` (status report of Sprint 0 progress / open gaps / active amendments) is deferred.
