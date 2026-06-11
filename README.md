@@ -96,17 +96,25 @@ Three implementation personas execute the HLD. They read the Pillars, run Sprint
 Sprint 0 is mandatory. It is a Three Amigos session — all three personas plus the Senior PM — that runs automatically after the Pillars are read.
 
 1. Read the in-scope set's four Pillars in full
-2. Execute Brain-identified LLD unknowns from Pillar IV
+2. Execute Brain-identified LLD unknowns from Pillar IV — answering what is answerable at setup time
 3. Surface additional gaps the Brain couldn't anticipate
-4. Resolve each item collaboratively or escalate formally
-5. Receive explicit PM sign-off before implementation begins
+4. Resolve each item collaboratively, assign it to the sprint where it becomes answerable, or escalate formally
+5. Define the sprint plan and decompose the first sprint only
+6. Receive explicit PM sign-off — which ratifies the sprint plan — before implementation begins
 
 HLD gaps can be skipped at the PM's direction. But they are never silently ignored — every skip is logged with rationale.
+
+#### The Sprint Cadence — One Sprint, One Goal, One Session
+
+Sprint 0 defines the solution; it does not decompose the entire Bedrock into one backlog. The Bedrock is sliced into **sprints** — each the smallest increment the PM can meaningfully UAT, sized to what one agent session can execute at full quality. **One sprint = one Stride goal = one session.** A coding agent's scarce resource is the context window, not calendar time — so the sprint boundary is a context boundary.
+
+All sprint goals are created at Sprint 0, but only the first is decomposed into enriched tasks. Each later sprint opens with an autonomous **boundary ceremony**: incorporate the PM's UAT findings from the previous sprint, work that sprint's deferred unknowns, then decompose and enrich against the codebase as it exists that day — never sprints in advance. The PM's single Sprint 0 sign-off authorizes every boundary; the PM re-enters the loop through between-sprint UAT, or when an unknown turns out to touch the Charter. The plan lives in `sprint_plan.md`, owned by the TPM.
 
 #### What The Hands Produce
 
 | File | Owner | Purpose |
 |---|---|---|
+| `sprint_plan.md` | TPM | The ratified sprint sequence — outcomes, deferred unknowns, handoffs |
 | `log_of_changes.md` | Tech Lead | Chronological dev log — Brain-readable on audit |
 | `qa_log.md` | QA Engineer | QA record — internal to The Hands |
 | `pillar_v_amendment_[feature].md` | TPM | Formal escalation when the blueprint needs to change |
@@ -125,7 +133,7 @@ On Claude Code, The Hands ship as a plugin with three rituals as first-class sla
 
 | Command | What it does |
 |---|---|
-| `/sprint-0` | Runs the mandatory Three Amigos foundational-context phase and holds at the Senior PM sign-off gate before any implementation. |
+| `/sprint-0` | Runs the mandatory Three Amigos foundational-context phase — resolving answerable LLD unknowns, writing the sprint plan, decomposing the first sprint — and holds at the Senior PM sign-off gate that ratifies the plan before any implementation. |
 | `/bedrock-audit` | Reports each Pillar's `[COMMITTED]` / `[UNDER AUDIT]` state and flags drift — uncommitted changes to a ratified Pillar. Read-only. |
 | `/amendment` | Drives the Pillar V Amendment ceremony: MACD discussion, Senior PM approval, the Handback Summary, and the single-use unlock marker that authorizes the one sanctioned committed-Pillar edit — a PROPOSED amendment row in the Pillar IV Ledger. Substantive Pillars (I/II/III) are never edited by the Hands; The Brain enshrines those. |
 
@@ -181,6 +189,7 @@ product-trio/
 │       ├── SKILL.md                 ← Thin skill: role, when-to-use, pointers
 │       └── references/              ← Progressive disclosure, loaded on demand
 │           ├── sprint-0.md
+│           ├── sprint-cadence.md
 │           ├── macd-protocol.md
 │           ├── amendment-protocol.md
 │           ├── personas.md
@@ -245,7 +254,7 @@ Gemini has no plugin system, so copy the contents of `skills/the-hands-agent/SKI
 
 1. **Start with The Brain** — Seed it with your product context. The Trio debates, challenges, and produces the four Pillar files.
 2. **Commit the Bedrock** — Drop the Pillar files into `productdocuments/` in your project repo.
-3. **Activate The Hands** — The implementation agent reads the Pillars, runs Sprint 0 to resolve LLD unknowns, and begins building.
+3. **Activate The Hands** — The implementation agent reads the Pillars, runs Sprint 0 to resolve LLD unknowns and plan the sprints, then builds one sprint per session — with your UAT of each increment between sessions.
 4. **Amendments surface naturally** — If The Hands hit a wall or find a better path, the Amendment Protocol packages the change and hands it back to The Brain for review. Nothing is lost. Nothing deviates silently.
 
 ---

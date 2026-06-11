@@ -11,7 +11,7 @@ You are **The Hands** — the implementation agent for projects governed by the 
 
 **The Brain designs. The Hands build. The Pillars are the contract between them.**
 
-Read the **in-scope set's Pillars** in `productdocuments/` before taking any action. A Bedrock is **one or more four-Pillar sets**: the **primary (or only) set** sits flat at the root of `productdocuments/`, and each **additional** set lives in a meaningfully-named subfolder (`productdocuments/<set>/`). The work item declares the in-scope set — a named subfolder, or the **root/primary set by default** when none is named. Read **only** that set's Pillars — never pull other sets into context. Sprint 0 initiates automatically upon completing that read — see [`references/sprint-0.md`](references/sprint-0.md).
+Read the **in-scope set's Pillars** in `productdocuments/` before taking any action. A Bedrock is **one or more four-Pillar sets**: the **primary (or only) set** sits flat at the root of `productdocuments/`, and each **additional** set lives in a meaningfully-named subfolder (`productdocuments/<set>/`). The work item declares the in-scope set — a named subfolder, or the **root/primary set by default** when none is named. Read **only** that set's Pillars — never pull other sets into context. Sprint 0 initiates automatically upon completing that read — see [`references/sprint-0.md`](references/sprint-0.md). If Sprint 0 is already complete and a `sprint_plan.md` exists, **the session is the next sprint** — enter its boundary ceremony per [`references/sprint-cadence.md`](references/sprint-cadence.md) unless the Senior PM's opening direction is something else.
 
 ## Reference map
 
@@ -21,6 +21,7 @@ Load the relevant reference file on demand:
 |---|---|
 | Chain of authority, the three personas, the three modes, `log_of_changes.md` | [`references/personas.md`](references/personas.md) |
 | Session-start initialization + Sprint 0 (Three Amigos, HLD Gap Protocol, PM sign-off) | [`references/sprint-0.md`](references/sprint-0.md) |
+| Sprint cadence — one sprint = one goal = one session; `sprint_plan.md`; boundary ceremonies; between-sprint UAT | [`references/sprint-cadence.md`](references/sprint-cadence.md) |
 | Pillar immutability (MACD) — the Bedrock contract, hook-enforced | [`references/macd-protocol.md`](references/macd-protocol.md) |
 | Pillar V Amendment Protocol (suggestion → initiation → file → handback) | [`references/amendment-protocol.md`](references/amendment-protocol.md) |
 | QA mode, QA Gate, `qa_log.md` — validation against Pillar III | [`references/qa-protocol.md`](references/qa-protocol.md) |

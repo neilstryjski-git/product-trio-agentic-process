@@ -2,6 +2,8 @@
 
 Sprint 0 is mandatory and initiates automatically after the Pillars are read. It runs as a **Three Amigos session** (see [`personas.md`](personas.md)) with the Senior PM present.
 
+Sprint 0 answers the implementation details that are knowable at setup time **and plans the sprints that deliver the rest** — it does not decompose the entire Bedrock into one backlog. The sprint model (one sprint = one Stride goal = one session, the sprint plan, boundary ceremonies) is defined in [`sprint-cadence.md`](sprint-cadence.md).
+
 ## Initialization Protocol
 
 On every session start, before any action:
@@ -41,24 +43,27 @@ Initialized: YYYY-MM-DD
 
 When Stride is the governed execution layer (the Product Trio default per Option A — see [`stride-integration.md`](stride-integration.md)), the task lifecycle, code review (`stride:task-reviewer`), and Bedrock-to-task decomposition all route through it.
 
-### Step 3 — Initiate Sprint 0
+### Step 3 — Initiate Sprint 0, or enter the next sprint
 
-Sprint 0 begins automatically upon completing the Pillar read. See §Objectives below.
+- If Sprint 0 has **not** been completed for the in-scope set: Sprint 0 begins automatically upon completing the Pillar read. See §Objectives below.
+- If Sprint 0 is complete and a `sprint_plan.md` exists: **the session is the next sprint.** Enter its boundary ceremony per [`sprint-cadence.md`](sprint-cadence.md) — unless the Senior PM's opening direction is something else (a defect, an amendment, a question), which is a managed exception.
 
 ### Step 4 — Resume or Create Logs
 
 - If `log_of_changes.md` exists → read the last entry and resume.
 - If not → create it with the standardized header documented in [`personas.md`](personas.md) (Tech Lead owns the dev log).
+- If `sprint_plan.md` exists → read it, including the previous sprint's Handoff (TPM owns the sprint plan — see [`sprint-cadence.md`](sprint-cadence.md)).
 
 ---
 
 ## Objectives
 
 1. Read the in-scope set's four Pillars in full.
-2. Execute all Sprint 0 Tasks assigned in Pillar IV — these are PM-defined, Brain-identified LLD unknowns.
+2. Execute all Sprint 0 Tasks assigned in Pillar IV — these are PM-defined, Brain-identified LLD unknowns. Answer the ones that are answerable at setup time.
 3. Proactively identify additional gaps the Tech Lead or QA Engineer surface that the Brain could not anticipate.
-4. Resolve each item collaboratively or escalate to the Amendment Protocol.
-5. Receive explicit Senior PM confirmation before transitioning to implementation.
+4. Resolve each item collaboratively, **assign it to the sprint where it becomes answerable** (recorded in `sprint_plan.md`), or escalate to the Amendment Protocol.
+5. Define the sprint plan and decompose **the first sprint only** — one sprint = one Stride goal = one session; later goals are created sparse with their deferred unknowns and task stubs (see [`sprint-cadence.md`](sprint-cadence.md)).
+6. Receive explicit Senior PM confirmation — which ratifies the sprint plan — before transitioning to implementation.
 
 ## HLD Gap Protocol
 
@@ -73,7 +78,7 @@ Impact: [What cannot proceed without resolution]
 Options: (a) [Option A]  (b) [Option B]  (c) Escalate to Brain
 ```
 
-The Senior PM may resolve the gap in the moment, defer it, or skip it entirely — **HLD gaps may be skipped at the PM's direction.** Skipped gaps are noted in `log_of_changes.md` with the PM's rationale.
+The Senior PM may resolve the gap in the moment, **assign it to the sprint where it becomes answerable** (it becomes a Deferred Unknown on that sprint in `sprint_plan.md`, worked at that sprint's boundary ceremony), defer it, or skip it entirely — **HLD gaps may be skipped at the PM's direction.** Skipped gaps are noted in `log_of_changes.md` with the PM's rationale.
 
 If a gap is complex enough to affect the Charter or Problem Statement, the TPM must flag it as an Amendment candidate:
 
@@ -88,3 +93,5 @@ See [`amendment-protocol.md`](amendment-protocol.md). The PM decides. The AI sug
 ## Sprint 0 Complete
 
 Sprint 0 closes when the Senior PM explicitly confirms: **"Sprint 0 complete."** Only then does The Hands enter Solo Execution Mode (see [`personas.md`](personas.md)).
+
+That confirmation also **ratifies the sprint plan**: every subsequent session enters its sprint's boundary ceremony autonomously, with no per-sprint PM gate. The PM re-enters the loop only through UAT between sprints or a Charter-touching escalation (see [`sprint-cadence.md`](sprint-cadence.md)).
