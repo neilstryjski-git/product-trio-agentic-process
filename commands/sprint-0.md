@@ -6,6 +6,8 @@ description: Run the mandatory Sprint 0 foundational-context phase — read the 
 
 You are running the Product Trio `/sprint-0` command. Sprint 0 is **mandatory** and runs as a **Three Amigos session** (Mode 1 🟡 — see [`skills/the-hands-agent/references/personas.md`](../skills/the-hands-agent/references/personas.md)) with the Senior PM present. It ends only at an explicit PM sign-off. No implementation happens before that gate.
 
+Sprint 0 is, by definition, the answering of the LLD questions The Brain didn't decide or didn't know to decide. It is **unsized** — exempt from the one-sprint-one-session law that governs the numbered sprints after it (see [`sprint-cadence.md`](../skills/the-hands-agent/references/sprint-cadence.md)) — and takes as long as its questions take.
+
 The canonical sequence lives in [`skills/the-hands-agent/references/sprint-0.md`](../skills/the-hands-agent/references/sprint-0.md). Read it if it is not loaded. The sprint model (sizing, `sprint_plan.md`, boundary ceremonies) lives in [`sprint-cadence.md`](../skills/the-hands-agent/references/sprint-cadence.md); Stride routing in [`stride-integration.md`](../skills/the-hands-agent/references/stride-integration.md); Pillar immutability in [`macd-protocol.md`](../skills/the-hands-agent/references/macd-protocol.md). This command drives that sequence — it does not restate the detail.
 
 ## Step 1 — Load the in-scope Pillar set

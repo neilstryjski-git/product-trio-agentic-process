@@ -6,6 +6,8 @@ The Bedrock defines the high-level vision. Sprint 0 defines the solution — the
 
 A coding agent's scarce resource is not calendar time — it is the context window. Sizing a sprint to a session makes the sprint boundary a *context* boundary: every session opens fresh, loads only its sprint's slice, and executes it at full quality. The cadence that calendar sprints give human teams, context-window sprints give The Hands.
 
+**Sprint 0 is exempt from this law.** Despite the name, Sprint 0 is not a sprint in the cadence's sense — it is, by definition, *the answering of the LLD questions The Brain didn't decide or didn't know to decide* (the Pillar IV Sprint 0 tasks, and the gaps the Tech Lead and QA surface). It is **unsized**: it takes as long as those questions take, spanning multiple sessions with the Senior PM if needed. The one-sprint-one-session law governs the numbered sprints that follow it. And the deferred-unknown mechanism is not a sizing escape for Sprint 0 — assigning an unknown to a later sprint is a judgment that it *becomes answerable* there, never a way to cut Sprint 0 short on questions that are answerable now.
+
 ## What Sprint 0 produces
 
 1. **Resolved LLD unknowns** — every Pillar IV Sprint 0 task and surfaced gap that is *answerable at setup time* is answered. Unknowns that are only answerable later are **assigned to the sprint where they become answerable** (see the third disposition in [`sprint-0.md`](sprint-0.md)'s HLD Gap Protocol) — deferred with a home, not skipped.

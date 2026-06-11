@@ -2,7 +2,7 @@
 
 Sprint 0 is mandatory and initiates automatically after the Pillars are read. It runs as a **Three Amigos session** (see [`personas.md`](personas.md)) with the Senior PM present.
 
-Sprint 0 answers the implementation details that are knowable at setup time **and plans the sprints that deliver the rest** — it does not decompose the entire Bedrock into one backlog. The sprint model (one sprint = one Stride goal = one session, the sprint plan, boundary ceremonies) is defined in [`sprint-cadence.md`](sprint-cadence.md).
+Sprint 0 is, by definition, **the answering of the LLD questions The Brain didn't decide or didn't know to decide** — the Pillar IV Sprint 0 tasks (known unknowns) and the gaps the Tech Lead and QA surface (unknown unknowns). It answers what is answerable at setup time **and plans the sprints that deliver the rest** — it does not decompose the entire Bedrock into one backlog. The sprint model (one sprint = one Stride goal = one session, the sprint plan, boundary ceremonies) is defined in [`sprint-cadence.md`](sprint-cadence.md); **Sprint 0 itself is exempt from that sizing law** — it is unsized and runs as long as its questions take.
 
 ## Initialization Protocol
 

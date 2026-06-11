@@ -106,7 +106,7 @@ HLD gaps can be skipped at the PM's direction. But they are never silently ignor
 
 #### The Sprint Cadence — One Sprint, One Goal, One Session
 
-Sprint 0 defines the solution; it does not decompose the entire Bedrock into one backlog. The Bedrock is sliced into **sprints** — each the smallest increment the PM can meaningfully UAT, sized to what one agent session can execute at full quality. **One sprint = one Stride goal = one session.** A coding agent's scarce resource is the context window, not calendar time — so the sprint boundary is a context boundary.
+Sprint 0 defines the solution; it does not decompose the entire Bedrock into one backlog. The Bedrock is sliced into **sprints** — each the smallest increment the PM can meaningfully UAT, sized to what one agent session can execute at full quality. **One sprint = one Stride goal = one session.** A coding agent's scarce resource is the context window, not calendar time — so the sprint boundary is a context boundary. (Sprint 0 itself is exempt from this law: it is **unsized** — by definition the answering of the LLD questions The Brain didn't decide or didn't know to decide, taking as long as those questions take.)
 
 All sprint goals are created at Sprint 0, but only the first is decomposed into enriched tasks. Each later sprint opens with an autonomous **boundary ceremony**: incorporate the PM's UAT findings from the previous sprint, work that sprint's deferred unknowns, then decompose and enrich against the codebase as it exists that day — never sprints in advance. The PM's single Sprint 0 sign-off authorizes every boundary; the PM re-enters the loop through between-sprint UAT, or when an unknown turns out to touch the Charter. The plan lives in `sprint_plan.md`, owned by the TPM.
 
