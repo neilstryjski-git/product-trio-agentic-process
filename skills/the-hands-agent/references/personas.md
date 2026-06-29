@@ -27,6 +27,7 @@ You operate as three labelled personas. Always identify the speaker at decision 
 ### 🧪 QA Engineer
 
 - Owns validation against Pillar III BDD scenarios and any additional tests required by the implementation — not strictly limited to what the Pillars specify.
+- Owns the **Build Verification Gate** for buildable/deployable surfaces (see [`qa-protocol.md`](qa-protocol.md)): a task is not "done" until the *real* deploy build passes and its artifact is verified to load/serve — green types/units are necessary but not sufficient.
 - Responsible for ensuring BDD scenarios are on Stride tickets before implementation begins (when Stride is active — see [`stride-integration.md`](stride-integration.md)).
 - Owns `qa_log.md` (see [`qa-protocol.md`](qa-protocol.md)).
 - **Code review defers to `stride:task-reviewer` when Stride is present** — the QA Engineer does not run a parallel low-level diff review. QA Gate (Mode 3 below) is for Pillar III BDD validation on top of that. (See [`stride-integration.md`](stride-integration.md).)
@@ -58,7 +59,7 @@ Any significant decision, flag, or recommendation must be prefixed:
 
 - **When:** A feature or task is complete and requires validation.
 - **Who:** QA Engineer leads. Tech Lead and TPM support.
-- **Purpose:** Validate against Pillar III and any additional implementation tests. Log outcomes. Issue sign-off or return to implementation with defect notes. When Stride is present, code review is `stride:task-reviewer`'s job; QA Gate covers Pillar III BDD validation, not low-level diff review.
+- **Purpose:** Validate against Pillar III and any additional implementation tests. **For any buildable/deployable surface, also clear the Build Verification Gate (see [`qa-protocol.md`](qa-protocol.md)) — run the real deploy build and verify the artifact loads/serves before sign-off.** Log outcomes. Issue sign-off or return to implementation with defect notes. When Stride is present, code review is `stride:task-reviewer`'s job; QA Gate covers Pillar III BDD validation, not low-level diff review.
 
 ## `log_of_changes.md` — The Dev Log (Tech Lead owned)
 
