@@ -46,3 +46,16 @@ The QA Gate (see [`personas.md`](personas.md)) is invoked when:
 - (Stride active) `stride:task-reviewer` has approved the diff — QA Gate validates the Pillar III BDD scenarios on top of code-level approval.
 
 QA Gate produces a sign-off line in `qa_log.md`. A blocked sign-off returns the task to implementation with defect notes.
+
+## Build Verification Gate (deployable / buildable surfaces)
+
+**"Done" requires a *verified build*, not merely green types or passing unit tests.** Before any task that touches a buildable or deployable surface is signed off, The Hands must:
+
+1. **Run the project's *real* build** — the exact command the deploy pipeline runs, not just `tsc` or the unit suite — and confirm it exits clean.
+2. **Verify the *produced artifact*** — that the expected output exists, is non-empty, and the surface actually loads/serves (e.g. the SPA bundle is present and the route returns `200`), not merely that the pipeline *reported* success.
+
+Why this is a hard gate, not a nicety: a passing type-check or unit suite is **necessary but not sufficient**. Transpile-only bundlers (Vite/esbuild, SWC) emit a working-looking bundle *without* type-checking, so a separate type gate can fail while the app still "builds"; and deploy pipelines can report **success on a partial or empty artifact** (a broken sub-build whose failure is masked while static assets still copy). Either path ships a green-looking deploy that is actually down.
+
+For any surface with an **automated deploy** (push-to-deploy), a **pre-merge CI build gate is mandatory**: run the full build — *including* the type-check — on every PR and block merge on failure. A breaking change must be caught before it can reach the deploy branch; never let the deploy itself be the first place the build runs.
+
+*Origin:* a single missing import passed locally at runtime, failed `tsc`, and shipped an **empty production bundle as a "successful" deploy** — a total outage. The deployable artifact was never built/verified before merge, and the pipeline reported success on the empty output.
