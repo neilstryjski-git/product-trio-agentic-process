@@ -171,6 +171,24 @@ All architecture diagrams are produced in **Mermaid.js** and stored directly in 
 
 ---
 
+## Deployment Profiles
+
+The framework is model- and vendor-agnostic. The base framework assumes **AI Hands** (Claude Code or Gemini CLI) executing autonomously against the Bedrock. But The Hands don't have to be a coding agent, and The Brain doesn't have to run on Claude.
+
+A **deployment profile** stamps the same Brain for a different execution surface: a different host for the agent, a different ticketing system, or human Hands instead of AI ones, without touching the Bedrock discipline underneath. The methodology stays constant while the delivery surface changes.
+
+### Microsoft Copilot Studio: human Hands via Jira
+
+The first profile runs The Brain as a **Microsoft Copilot Studio** agent, delivering into a **human** engineering team that works from **Jira** tickets. What changes from the base framework:
+
+- **AI proposes, humans ratify.** The agent's output reaches at most `[PROPOSED]`. Humans ratify at two gates: the Product Trio meeting ratifies Pillars, and backlog refinement ratifies tickets. Where the base profile enforces immutability with the Bedrock hook, here the human gates do.
+- **Two operating modes.** *Greenfield* runs the full pipeline, from interview to PROPOSED Pillars to decomposition to tickets. *Additive* is a Hands-session mode that turns supplied material straight into tickets, carrying honest `PENDING` flags wherever committed Bedrock or real acceptance criteria don't yet exist, and never inventing them.
+- **Pillars decompose to paste-ready Jira blocks:** Epic / Story / Task / Spike, with verbatim Pillar III BDD as acceptance criteria and no Jira sub-tasks.
+
+The generic masters live in [`deployment-profiles/copilot/`](deployment-profiles/copilot/): `core-instructions.md` (sized to fit the agent's ~8K instructions field), the mode-flexible `ticket-template.md`, and a profile README. A deployment stamps a copy with the organization's own grant clause and hosts the knowledge sources on the organization's platform. The masters stay in this repo.
+
+---
+
 ## What's in This Repo
 
 The repo root *is* the Claude Code plugin **and** its own marketplace.
@@ -206,6 +224,8 @@ product-trio/
 ├── hooks/
 │   ├── hooks.json                   ← PreToolUse Write|Edit → bedrock-guard.sh
 │   └── bedrock-guard.sh             ← Enforces Bedrock immutability (MACD)
+├── deployment-profiles/               ← Environment-specific stamps of The Brain
+│   └── copilot/                        ← Microsoft Copilot Studio + human Hands via Jira
 └── productdocuments/
     └── README.md                    ← Your Bedrock: four Pillars (flat for a single set, or one named subfolder per set)
 ```
