@@ -173,19 +173,17 @@ All architecture diagrams are produced in **Mermaid.js** and stored directly in 
 
 ## Deployment Profiles
 
-The framework is model- and vendor-agnostic. The base framework assumes **AI Hands** (Claude Code or Gemini CLI) executing autonomously against the Bedrock. But The Hands don't have to be a coding agent, and The Brain doesn't have to run on Claude.
+The framework is model- and vendor-agnostic. The base framework assumes **AI Hands** (Claude Code or Gemini CLI) executing autonomously against the Bedrock, but The Brain does not have to run on Claude.
 
-A **deployment profile** stamps the same Brain for a different execution surface: a different host for the agent, a different ticketing system, or human Hands instead of AI ones, without touching the Bedrock discipline underneath. The methodology stays constant while the delivery surface changes.
+A **deployment profile** stamps the same Brain for a different environment: a different host for the agent, or a different ticketing system, without touching the Bedrock discipline underneath. The methodology stays constant while the delivery surface changes.
 
-### Microsoft Copilot Studio: human Hands via Jira
+### Copilot Studio: a first enterprise deployment
 
-The first profile runs The Brain as a **Microsoft Copilot Studio** agent, delivering into a **human** engineering team that works from **Jira** tickets. What changes from the base framework:
+The builds shown with this framework so far have been solo efforts: one PM and one AI coding agent. This profile is different in setting. It is the first deployment of PTAP inside an organization, with a real product team rather than a single builder.
 
-- **AI proposes, humans ratify.** The agent's output reaches at most `[PROPOSED]`. Humans ratify at two gates: the Product Trio meeting ratifies Pillars, and backlog refinement ratifies tickets. Where the base profile enforces immutability with the Bedrock hook, here the human gates do.
-- **Two operating modes.** *Greenfield* runs the full pipeline, from interview to PROPOSED Pillars to decomposition to tickets. *Additive* is a Hands-session mode that turns supplied material straight into tickets, carrying honest `PENDING` flags wherever committed Bedrock or real acceptance criteria don't yet exist, and never inventing them.
-- **Pillars decompose to paste-ready Jira blocks:** Epic / Story / Task / Spike, with verbatim Pillar III BDD as acceptance criteria and no Jira sub-tasks.
+It is an early test, not a proven enterprise result. The profile records how the framework is configured for that setting; the workflow it supports will be documented once there is real experience to report.
 
-The generic masters live in [`deployment-profiles/copilot/`](deployment-profiles/copilot/): `core-instructions.md` (sized to fit the agent's ~8K instructions field), the mode-flexible `ticket-template.md`, and a profile README. A deployment stamps a copy with the organization's own grant clause and hosts the knowledge sources on the organization's platform. The masters stay in this repo.
+Microsoft Copilot Studio hosts the agent for this deployment: `core-instructions.md` in the instructions field, with the ticket template and operating manual attached as knowledge sources. Generic masters live in [`deployment-profiles/copilot/`](deployment-profiles/copilot/).
 
 ---
 
